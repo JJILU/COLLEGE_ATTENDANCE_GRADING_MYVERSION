@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+
+
+
+{% block content %}
+
+  <h1>Login As Lecture Or Student</h1>
+  <p>
+    <a href="{{ url_for('lecturer_register')}}">Login Or Signup As Lecturer</a>
+  </p>
+  <p>
+    <a href="{{ url_for('student_login')}}">Login Or Signup As Lecturer</a>
+  </p>
+{% endblock content %}

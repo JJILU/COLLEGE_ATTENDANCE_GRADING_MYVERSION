@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+  
+{% endblock title %}
+
+{% block content %}
+  <div>
+    <h1>Attendance & Grading System</h1>
+
+    <form id="auth-form" action="{{ url_for('lecturer_login') }}" method="POST">
+      <input 
+       type="text" 
+       name="lecturerid"
+       placeholder="lecturerid">
+
+      <input type="text" 
+       name="password"
+       placeholder="password" 
+       >
+
+      <input type="button" 
+      value="Login As Lecturer" 
+      onclick="setActionForm('login')"
+      >
+
+      <input type="button"
+       value="Register As Lecturer" 
+       onclick="setActionForm('register')"
+      >
+      {% if error %}
+        <p style="color:red; font-size: 20px;">{{ error }}</p>
+      {% endif %}
+
+      {% if missing_fields %}
+          {% for error in missing_fields %}
+            <div style="color:red; font-size: 20px;" >{{ error }}</div>
+          {% endfor %}
+      {% endif %}
+    </form>
+   
+
+  <script>
+    // check which button was clicked
+    function setActionForm(action) {
+      let form = document.getElementById("auth-form")
+
+      if (action === 'login') {
+        form.action = '{{ url_for("lecturer_login")}}'
+        form.method = 'POST'
+        form.submit();
+      } else if (action === 'register') {
+        form.action = '{{ url_for("lecturer_register")}}'
+        form.method = 'POST'
+        form.submit();
+      }
+    }
+  </script>
+{% endblock content %}
