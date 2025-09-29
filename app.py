@@ -1,7 +1,7 @@
 from flask import Flask, redirect, request, render_template, session, url_for
 from extensions import db, migrate
 # make app aware of models
-# from models import User,Profile
+from models import Lecturer,Student
 
 
 app = Flask(__name__, template_folder="templates")
@@ -61,7 +61,7 @@ def lecturer_register():
         return render_template('auth/lecturer_auth.html', error="Invalid Lecturer id"), 400
     
     # check is lecturer already has an account
-    new_lecturer = Lecturer()
+    # new_lecturer = Lecturer()
 
     # lecturer does not exist, attempet create account and redirect to dashboard
 
