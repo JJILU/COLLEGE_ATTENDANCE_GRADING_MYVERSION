@@ -5,10 +5,16 @@ class Lecturer(db.Model):
 
     __tablename__ = "lecturer"
 
+    lecturer_id : str
+    password : str
+
 
     id = db.Column(db.Integer, primary_key=True)
     lecturer_id = db.Column(db.String(10), nullable=False)
     password = db.Column(db.String(50))
+
+    def __init__(self,lecturer_id) -> None:
+        self.lecturer_id = lecturer_id
 
     # method to hash password when user registers
     def hash_password(self,password):

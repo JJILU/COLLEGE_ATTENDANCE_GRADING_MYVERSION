@@ -2,11 +2,13 @@ from flask import Flask, redirect, request, render_template, session, url_for
 from extensions import db, migrate
 # make app aware of models
 from models import Lecturer,Student
+from config import Config
 
 
 app = Flask(__name__, template_folder="templates")
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///auth.sqlite3"
+app.config["SECRET_KEY"] = Config.SECRET_KEY
 
 # init extensions
 db.init_app(app)
@@ -17,8 +19,8 @@ migrate.init_app(app, db)
 
 @app.route("/")
 def home():
-    if 'username' in session:
-        return render_template('Dashboard/dashbaord.html')
+    if 'lecturer_id' in session:
+        return redirect(url_for('dasboard'))
     return render_template('landing_page.html')
 
 # Lecturer Auth End-points
@@ -61,12 +63,32 @@ def lecturer_register():
         return render_template('auth/lecturer_auth.html', error="Invalid Lecturer id"), 400
     
     # check is lecturer already has an account
-    # new_lecturer = Lecturer()
+    new_lecturer = Lecturer.query.filter_by(lecturer_id=lecture_id).first()
+
+    if new_lecturer:
+        return render_template('auth/lecturer_auth.html', error=f"Lecturer with id {lecture_id} already exists"), 400
 
     # lecturer does not exist, attempet create account and redirect to dashboard
+    try:
+       # create new lecturer account 
+        new_lecturer  = Lecturer(lecturer_id=lecture_id)
+        new_lecturer.hash_password(password)
+
+        # save lecturer to table
+        new_lecturer.save()    
+
+        # create new session for the lecturer
+        session["lecturer_id"] = lecture_id
+
+        # redirect user to dashboard
+        return redirect(url_for('dasboard'))
+    except Exception as e:
+        db.session.rollback()
+        print("Lecturer account could not be created due to following error: ", e)
+        return render_template('auth/lecturer_auth.html', error=f"An error occured,account could not be created"), 500
 
 
-    return "registered as lecturer"
+    
 
 
 @app.route("/lecturer_login", methods=["GET", "POST"])
@@ -88,12 +110,13 @@ def student_login():
 # Logout Enpoint
 @app.route("/logout", methods=["GET"])
 def logout():
-    return "logged out"
+    session.pop("lecturer_id",None)
+    return redirect(url_for('home'))
 
 
 # Dashboard
 @app.route("/dashboard")
 def dasboard():
-    if "username" in session:
-        return render_template('Dashboard/dashbaord.html')
-    return redirect(url_for(''))
+    if "lecturer_id" in session:
+        return render_template('Dashboard/dashbaord.html', username=session["lecturer_id"])
+    return redirect(url_for('home'))
