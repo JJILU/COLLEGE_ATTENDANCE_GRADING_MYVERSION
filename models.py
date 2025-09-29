@@ -1,9 +1,12 @@
 from extensions import db
+from werkzeug.security import generate_password_hash,check_password_hash
 
 class Lecturer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     Lecturer_id = db.Column(db.String(10), nullable=False)
-    password = db.Column(db.String(50), nullable=False)
+    password = db.Column(db.String(50))
+
+
    
 
 

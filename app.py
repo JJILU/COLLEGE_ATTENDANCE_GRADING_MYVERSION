@@ -1,5 +1,7 @@
 from flask import Flask, redirect, request, render_template, session, url_for
 from extensions import db, migrate
+# make app aware of models
+# from models import User,Profile
 
 
 app = Flask(__name__, template_folder="templates")
@@ -10,8 +12,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///auth.sqlite3"
 db.init_app(app)
 migrate.init_app(app, db)
 
-# make app aware of models
-# from models import User,Profile
+
 
 
 @app.route("/")
@@ -54,6 +55,16 @@ def lecturer_register():
 
     if missing_fields:
         return render_template('auth/lecturer_auth.html', missing_fields=missing_fields), 400
+    
+    # check if lecturer id is valid
+    if lecture_id not in valid_lecturer_id:
+        return render_template('auth/lecturer_auth.html', error="Invalid Lecturer id"), 400
+    
+    # check is lecturer already has an account
+    new_lecturer = Lecturer()
+
+    # lecturer does not exist, attempet create account and redirect to dashboard
+
 
     return "registered as lecturer"
 

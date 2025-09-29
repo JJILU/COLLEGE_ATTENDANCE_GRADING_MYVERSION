@@ -34,7 +34,7 @@
       {% endif %}
 
       {% if missing_fields %}
-          {% for error in missing_fields %}
+          {% for field in missing_fields %}
             <div style="color:red; font-size: 20px;" >{{ error }}</div>
           {% endfor %}
       {% endif %}
