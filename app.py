@@ -99,12 +99,12 @@ def lecturer_login():
 # Student Auth End-points
 @app.route("/student_register", methods=["GET", "POST"])
 def student_register():
-    return "registered as student"
+    return render_template("auth/student_auth.html")
 
 
 @app.route("/student_login", methods=["GET", "POST"])
 def student_login():
-    return "registered as student"
+    return render_template("auth/student_auth.html")
 
 
 # Logout Enpoint
