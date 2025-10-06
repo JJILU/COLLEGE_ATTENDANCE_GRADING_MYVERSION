@@ -39,6 +39,9 @@ def lecturer_register():
 
     lecture_id = auth_creds.get("lecturerid", "").strip()
     password = auth_creds.get("password", "").strip()
+    
+    print("Raw form:", request.form)
+    print(lecture_id,password)
 
     # check if auth credentials was submitted
     if not lecture_id and not password:
@@ -64,6 +67,8 @@ def lecturer_register():
     
     # check is lecturer already has an account
     new_lecturer = Lecturer.query.filter_by(lecturer_id=lecture_id).first()
+
+    print("new lecturer",new_lecturer)
 
     if new_lecturer:
         return render_template('auth/lecturer_auth.html', error=f"Lecturer with id {lecture_id} already exists"), 400

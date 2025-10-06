@@ -61,20 +61,21 @@
 
 {% block content %}
 
-<div class="container" id="container">
+<div class="container" id="container" >
 	<div class="form-container sign-up-container">
-		<form action="#">
-			<h1>Create Account</h1>
+		<form id="auth-form" action="{{ url_for('lecturer_login') }}" method="POST">
+			<!-- <h1>Create Account</h1> -->
 			<div class="social-container">
-				<a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+				<!-- <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
 				<a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
-				<a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+				<a href="#" class="social"><i class="fab fa-linkedin-in"></i></a> -->
+        <h1>Create Account</h1>
 			</div>
 			<span>or use your email for registration</span>
-			<input type="text" placeholder="Name" />
-			<input type="email" placeholder="Email" />
-			<input type="password" placeholder="Password" />
-			<button>Sign Up</button>
+			<input type="text" name="lecturerid"  placeholder="lecturerid"/>
+			<input type="text" name="password" placeholder="Password" />
+			<!-- <input type="password" placeholder="Password" /> -->
+			<button onclick="setActionForm('register')">Sign Up</button>
 		</form>
 	</div>
 	<div class="form-container sign-in-container">
@@ -89,7 +90,7 @@
 			<input type="email" placeholder="Email" />
 			<input type="password" placeholder="Password" />
 			<a href="#">Forgot your password?</a>
-			<button>SIGN IN</button>
+			<button onclick="setActionForm('login')">SIGN IN</button>
 		</form>
 	</div>
 	<div class="overlay-container">
@@ -117,6 +118,25 @@
 </footer>
 
 <script src="{{ url_for('static', filename='js/index.js') }}">
+</script>
+
+
+<script>
+  // check which button was clicked
+  function setActionForm(action) {
+    console.log(action)
+    let form = document.getElementById("auth-form")
+
+    if (action === 'login') {
+      form.action = '{{ url_for("lecturer_login")}}'
+      form.method = 'POST'
+      form.submit();
+    } else if (action === 'register') {
+      form.action = '{{ url_for("lecturer_register")}}'
+      form.method = 'POST'
+      form.submit();
+    }
+  }
 </script>
 
   

@@ -12,6 +12,7 @@ class Lecturer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     lecturer_id = db.Column(db.String(10), nullable=False)
     password = db.Column(db.String(50))
+    
 
     def __init__(self,lecturer_id) -> None:
         self.lecturer_id = lecturer_id

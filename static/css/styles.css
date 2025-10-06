@@ -250,3 +250,17 @@ footer a {
     color: #3c97bf;
     text-decoration: none;
 }
+
+
+body {
+	background-size: cover;
+	font-family: 'Poppins', sans-serif;
+}
+
+/* Optional: add a transparent overlay */
+.container {
+	background-color: rgba(255, 255, 255, 0.85);
+	border-radius: 20px;
+	padding: 30px;
+	box-shadow: 0 0 15px rgba(0,0,0,0.2);
+}
